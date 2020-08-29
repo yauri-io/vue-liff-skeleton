@@ -1,4 +1,4 @@
-# quick-survey
+# Line Liff Project Skeleton With Vue 3 & Tailwind CSS
 
 ## Project setup
 ```

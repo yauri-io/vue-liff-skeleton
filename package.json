@@ -1,6 +1,11 @@
 {
-  "name": "quick-survey",
+  "name": "vue-liff-skeleton",
   "version": "0.1.0",
+  "author": {
+    "name": "y-io",
+    "email": "me@yauri.io"
+  },
+  "keywords": ["line", "liff", "vue"],
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,11 +14,14 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^3.0.0-0"
+    "tailwindcss": "^1.7.6",
+    "vue": "^3.0.0-0",
+    "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "^4.5.4",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0-0",
     "babel-eslint": "^10.1.0",
@@ -32,7 +40,10 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {},
+    "globals": {
+      "liff": true
+    }
   },
   "browserslist": [
     "> 1%",

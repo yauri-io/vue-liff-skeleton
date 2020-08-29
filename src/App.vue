@@ -1,28 +1,66 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
-</template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Spinner from "@/components/Spinner";
+import {R_MAIN} from "@/constants";
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  components: {Spinner},
+  data() {
+    return {
+      scriptId: 'liffSDK',
+      scriptSrc: 'https://static.line-scdn.net/liff/edge/2/sdk.js',
+      liffId: process.env.VUE_APP_LIFF_ID,
+      loggedIn: false
+    }
+  },
+  created() {
+    if (!document.getElementById(this.scriptId)) {
+      this.loadLiffSDK();
+    }
+  },
+  methods: {
+    loadLiffSDK() {
+      const head = document.getElementsByTagName('head')[0];
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = this.scriptSrc;
+      script.id = this.scriptId;
+      script.onload = () => {
+        this.initLiff();
+      };
+      script.onerror = (err) => {
+        console.log('Liff SDK load error', err);
+      };
+      head.append(script);
+    },
+    async initLiff() {
+      try {
+        await liff.init({liffId: this.liffId});
+        this.initApp();
+      } catch (err) {
+        console.error(err);
+        // TODO: show error message
+      }
+    },
+    initApp() {
+      this.loggedIn = liff.isLoggedIn();
+      if (this.loggedIn) {
+        return this.$router.push({name: R_MAIN});
+      }
+      liff.login();
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<template>
+  <div v-if="!loggedIn" class="w-full flex justify-center h-full">
+    <div class="flex items-center">
+      <div>
+        <Spinner/>
+      </div>
+      <div>Loading</div>
+    </div>
+  </div>
+  <router-view/>
+</template>
